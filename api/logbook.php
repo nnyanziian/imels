@@ -127,4 +127,74 @@ function approveActivity($acId=''){
 			
 		}
 }
+
+
+// get progress
+	   	function loogBookProgress($id=''){
+		$conn=connect_db();
+		$sql = "SELECT day_no FROM logbook WHERE student_id=$id GROUP BY day_no";
+		$result = mysqli_query($conn, $sql);
+		if (!$result) {
+			
+			echo json_encode(array(
+				'status' => 'error',
+				'message' => mysqli_error($conn)
+			));
+			exit();
+		}
+		else{
+			
+			if ($result->num_rows > 0) {
+				$rowCount=mysqli_num_rows($result);
+				$pec= $rowCount/40*100;
+				
+				echo json_encode(array(
+					'status' => 'success',
+					'percentage' => $pec.'%'
+					//'data' => $result->fetch_all(MYSQLI_ASSOC),
+				));
+				exit();
+			} else if ($result->num_rows <= 0) {
+				
+				echo json_encode(array(
+					'status' => 'failed',
+					'message' => 'There are no activities on the day'
+				));
+				exit();
+			}
+		}
+	}
+
+//get activity by day
+    	function activityByDay($id=''){
+		$conn=connect_db();
+		$sql = "SELECT * FROM logbook WHERE day_no = $id";
+		$result = mysqli_query($conn, $sql);
+		if (!$result) {
+			
+			echo json_encode(array(
+				'status' => 'error',
+				'message' => mysqli_error($conn)
+			));
+			exit();
+		}
+		else{
+			
+			if ($result->num_rows > 0) {
+				
+				echo json_encode(array(
+					'status' => 'success',
+					'data' => $result->fetch_all(MYSQLI_ASSOC)
+				));
+				exit();
+			} else if ($result->num_rows <= 0) {
+				
+				echo json_encode(array(
+					'status' => 'failed',
+					'message' => 'There are no activities on the day'
+				));
+				exit();
+			}
+		}
+	}
 ?>

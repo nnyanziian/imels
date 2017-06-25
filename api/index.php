@@ -185,4 +185,22 @@ $app->get('/activity/delete/{id}', function ($request, $response, $args){
 		return approveActivity($id);
 	});
 
+
+			//activity  by Day *
+	$app->get('/activity/day/{id}', function ($request, $response, $args){
+		$id=(int)$args['id'];
+		return activityByDay($id);
+
+	
+	});
+
+
+					//prpgress loogBookProgress *
+	$app->get('/progress/{id}', function ($request, $response, $args){
+		$id=(int)$args['id'];
+		return loogBookProgress($id);
+
+	
+	});
+
 	$app->run();
