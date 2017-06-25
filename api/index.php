@@ -65,26 +65,26 @@
 	//register internship cordinator *
 		$app->post('/internc/register', 'registerInternshipCodinator');	
 
-	//internship cordinator by id
+	//internship cordinator by id *
 	$app->get('/internc/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return internshipCodinatorById($id);
 	});
 
-	//update ic 
+	//update ic *
 	$app->post('/internc/update/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return updateInternshipCodinator($id);
 	});
 
 
-//delete ic deleteInternshipCodinator
+//delete ic deleteInternshipCodinator *
 $app->get('/internc/delete/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return deleteInternshipCodinator($id);
 	});
 
-	//register internship cordinator 
+	//Add an activity
 		$app->post('/logbook/add', 'createActivity');	
 
 		//activity by id
