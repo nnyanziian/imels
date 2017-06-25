@@ -84,65 +84,65 @@ $app->get('/internc/delete/{id}', function ($request, $response, $args){
 		return deleteInternshipCodinator($id);
 	});
 
-	//Add an activity
+	//Add an activity *
 		$app->post('/logbook/add', 'createActivity');	
 
-		//activity by id
+		//activity by id *
 	$app->get('/activity/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return activityById($id);
 	});
 
-	//delete activity
+	//delete activity *
 $app->get('/activity/delete/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return deleteActivity($id);
 	});
 
 
-//register supervisor 
+//register supervisor *
 		$app->post('/supervisor/add', 'addSupervisor');	
 
-//get supervisor by type getafSupervisor
+//get supervisor by type getafSupervisor *
 	$app->get('/supervisor/type/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return getafSupervisor($id);
 	});
 
-//get supervisor by id getafSupervisor
+//get supervisor by id getafSupervisor *
 	$app->get('/supervisor/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return getSupervisorById($id);
 	});
 
 
-//update Supervisor
+//update Supervisor *
 
 	$app->post('/supervisor/update/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return updateSupervisor($id);
 	});
 
-//delete supervisor
+//delete supervisor *
 	$app->get('/supervisor/delete/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return deleteSupervisor($id);
 	});
 
-// assign student to supervisor
+// assign student to supervisor *
 		$app->post('/assign/ac', 'assignSupervisorA');	
 
-		// assign student to supervisor
+		// assign student to supervisor *
 		$app->post('/assign/f', 'assignSupervisorF');	
 
-//delete supervisorf
+//delete supervisorf *
 	$app->get('/assignf/delete/{id}/{st}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		$st=(int)$args['st'];
 		return deleteAssignmentf($id, $st);
 	});
 
-//delete supervisora
+//delete supervisora *
 	$app->get('/assigna/delete/{id}/{st}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		$st=(int)$args['st'];
@@ -151,35 +151,35 @@ $app->get('/activity/delete/{id}', function ($request, $response, $args){
 
 
 
-//student login
+//student login *
 	$app->post('/student/login', 'studentLogin');
 
-	//In login
+	//In login *
 	$app->post('/internc/login', 'inLogin');
 
-	//Supervisorlogin
+	//Supervisorlogin *
 	$app->post('/supervisor/login', 'suLogin');	
 
 
-	//Logout all
+	//Logout all *
 	$app->get('/user/logout', 'logout');
 
 
 	
-	//students unasigned by academic
+	//students unasigned by academic *
 	$app->get('/student/unassigned/a', 'getStudentNotAssignedToAcademic');
 
-		//students unasigned by field
+		//students unasigned by field *
 	$app->get('/student/unassigned/f', 'getStudentNotAssignedToField');
 
 
-	//get assigned to supervisor
+	//get assigned to supervisor *
 	$app->get('/assign/supervisor/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return studentAssignBySupervisor($id);
 	});
 
-		//approve activity
+		//approve activity *
 	$app->get('/activity/approve/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];
 		return approveActivity($id);
