@@ -54,9 +54,6 @@ else{
          </form>
          <br>
          <div class="activity_list">
-            <p class="alert alert-success">Activites go here below in a list.  <button class="pull-right btn btn-danger btn-xs">x</button></p>
-                  <br>
-            <p>Activites go here below in a list.</p>
          </div>
         </div>
     </div>
@@ -68,8 +65,10 @@ else{
           </div>
           <p class="text-center">Completed</p>
 
+
+       <h3 class="page-header">Supervisor Comments</h3>
           <div class="commentsBySupervisor">
-            <p class="alert alert-success">Comment</p>
+            <p class="alert alert-success"></p>
           </div>
     </div>
     </div>	

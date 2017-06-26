@@ -51,6 +51,12 @@
 		return getCommentById($commentId);
 	});
 
+	//Get Comment By activity *
+	$app->get('/comment/activity/{id}', function ($request, $response, $args){
+		$commentId=(int)$args['id'];
+		return getCommentByActivity($commentId);
+	});
+
 	//Add Student *
 	$app->post('/comment/add', 'addComment');	
 

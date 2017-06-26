@@ -1,6 +1,10 @@
 $(function() {
     //alert("You are a Student");
     $('.disabledP').hide();
+    $('.disabledP .addActivityForm').hide();
+    $('.disabledP .activity_list').hide();
+
+
     var student_id = $('.listOfDays').attr("st-id");
     getDaysOfStudent(student_id);
 
@@ -8,7 +12,12 @@ $(function() {
     // add Activity
     $('.addActivity').click(function(e) {
         e.preventDefault();
-        $('.disabledP').fadeIn();
+
+        $('.disabledP').fadeIn(function() {
+            $('.disabledP .activity_list').fadeIn();
+            $('.disabledP .addActivityForm').fadeIn();
+        });
+
         $('.addActivityForm').submit(function(event) {
             event.preventDefault();
 
@@ -51,7 +60,7 @@ function addActivity() {
     };
 
     $.ajax(formSettings).success(function(response) {
-        alert(JSON.stringify(formdata));
+
         if (response.status == 'failed' || response.status == 'error') {
             console.log(JSON.stringify(response));
             notify("Activity not Created Please check your submited details", "warning");
@@ -60,7 +69,10 @@ function addActivity() {
             console.log(JSON.stringify(response));
             notify("Activity Created", "success");
             $('.disabledP').fadeOut();
-            getDaysOfStudent(student_id);
+            $('.disabledP .addActivityForm').fadeOut();
+            location.reload();
+
+            //getDaysOfStudent(student_id);
 
         } else {
 
@@ -120,7 +132,11 @@ function getDaysOfStudent(id = "") {
 
 
 function activityByDay(id = "", st = "") {
-    $('.disabledP').fadeIn();
+    $('.disabledP').fadeIn(function() {
+        $('.disabledP .addActivityForm').fadeOut();
+        $('.disabledP .activity_list').fadeIn();
+    });
+
     var formsSettings = {
         "type": "GET",
         "dataType": "json",
@@ -137,11 +153,17 @@ function activityByDay(id = "", st = "") {
             $('.disabledP').hide();
 
         } else if (response.status == 'success') {
+            console.log(JSON.stringify(response));
             var elementV = response.data;
 
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.activity_details + '<button href="' + value.id + '" class="delActivity pull-right btn btn-danger btn-xs">x</button></p><br>';
+                if (value.approved == 0) {
+                    var color = "warning"
+                } else {
+                    var color = "success"
+                }
+                appendData += '<p class="alert alert-' + color + '" href="' + value.id + '">' + value.activity_details + '<br><button href="' + value.id + '" class="comBtn pull-left btn btn-default btn-xs">comments</button>&nbsp;<button href="' + value.id + '" class="delActivity pull-right btn btn-danger btn-xs">x</button></p><br>';
 
             });
             $('.activity_list').html(appendData);
@@ -150,7 +172,18 @@ function activityByDay(id = "", st = "") {
                 event.preventDefault();
                 var actId = $(this).attr('href');
                 activityDel(actId);
+
+                $(this).parent().remove();
+
             });
+
+            //comBtn comments
+            $('.comBtn').click(function(event) {
+                event.preventDefault();
+                var actId = $(this).attr('href');
+                viewComments(actId);
+            });
+
 
         }
 
@@ -164,36 +197,61 @@ function activityDel(actId = "") {
     var formsSettings = {
         "type": "GET",
         "dataType": "json",
-        "url": "api/activity/delete/" + id
+        "url": "api/activity/delete/" + actId
     };
 
     $.ajax(formsSettings).success(function(response) {
-        $('.activity_list').html("");
+
 
         if (response.status == 'failed' || response.status == 'error') {
 
-            notify("There are no Activities", "warning");
-            $('.disabledP').hide();
+            notify("Failed to remove activity", "warning");
+            //$('.disabledP').hide();
 
         } else if (response.status == 'success') {
-            var elementV = response.data;
+            notify("Activity removed", "success");
 
-            var appendData = "";
-            $.each(elementV, function(key, value) {
-                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.activity_details + '<button href="' + value.id + '" class="delActivity pull-right btn btn-danger btn-xs">x</button></p><br>';
 
-            });
-            $('.activity_list').html(appendData);
+            location.reload();
 
-            $('.delActivity').click(function(event) {
-                event.preventDefault();
-                var actId = $(this).attr('href');
-                activityDel(actId);
-            });
 
         }
 
 
 
     });
+}
+
+
+function viewComments(id = "") {
+    var formsSettings = {
+        "type": "GET",
+        "dataType": "json",
+        "url": "api/comment/activity/" + id,
+    };
+
+
+    $.ajax(formsSettings).success(function(response) {
+        $('.commentsBySupervisor').html("");
+
+        if (response.status == 'failed' || response.status == 'error') {
+
+            notify("There are no Comments", "warning");
+
+        } else if (response.status == 'success') {
+            var elementV = response.data;
+
+            var appendData = "";
+            $.each(elementV, function(key, value) {
+                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.comment_details + '</p><br>';
+
+            });
+            $('.commentsBySupervisor').html(appendData);
+
+        }
+
+
+
+    });
+
 }
