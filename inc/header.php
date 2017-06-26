@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,8 +48,43 @@
 <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Help</a></li>
         <li><a href="#">About</a></li>
-        <li><a href="#">Login</a></li>
+ 
+        <?php
+  if(isset($_SESSION['elms-user_id']) && 
+    isset($_SESSION['elms-username']) && 
+    isset($_SESSION['elms-type'])){
+
+      $stype="";
+      
+      if ($_SESSION['elms-type']==1){
+          $stype="Student: ";
+      }
+      else if($_SESSION['elms-type']==2){
+          $stype="Supervisor: ";
+      }
+      else if($_SESSION['elms-type']==3){
+        $stype="Coordinator: ";
+
+      }
+    //logged
+ 
+        ?>
+<li><a href="#"><span class="fa fa-user"> </span> <?php echo $stype.$_SESSION['elms-username']; ?></a></li>
+        <li><a class="logout" href="#">Logout</a></li>
+        
+        <?php
+         }
+else{
+
+
+        ?>
+<li><a href="#">Login</a></li>
         <li><a href="#">Register</a></li>
+        <?php
+
+}
+        ?>
+
     </ul>
   </div>
 </nav>

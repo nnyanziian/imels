@@ -1,4 +1,5 @@
 <?php
+		session_start();
         header('Content-type:application/json');
 
         //login
@@ -35,6 +36,7 @@
                     'status' => 'success',
                     'user_id'=>$student['id'],
                     'student_no'=>$student['student_no']
+					
 				));
 				exit();
 			
@@ -98,12 +100,12 @@ function inLogin(){
 				
 				$_SESSION['elms-user_id']=$user['id'];
 				$_SESSION['elms-username']=$user['username'];
-                $_SESSION['elms-type']=2;
+                $_SESSION['elms-type']=3;
 
 				echo json_encode(array(
                     'status' => 'success',
                     'user_id'=>$user['id'],
-                    'student_no'=>$user['username']
+                    'username'=>$user['username']
 				));
 				exit();
 			
@@ -166,12 +168,12 @@ function suLogin(){
 				
 				$_SESSION['elms-user_id']=$user['id'];
 				$_SESSION['elms-username']=$user['username'];
-                $_SESSION['elms-type']=3;
+                $_SESSION['elms-type']=2;
 
 				echo json_encode(array(
                     'status' => 'success',
                     'user_id'=>$user['id'],
-                    'student_no'=>$user['username']
+                    'username'=>$user['username']
 				));
 				exit();
 			

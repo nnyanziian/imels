@@ -1,4 +1,29 @@
 <?php
+session_start();
+
+	if( isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==1){
+	//student
+	header('Location:student.php');
+	}
+	else if(isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==2){
+	//supervisor
+	header('Location:supervisor.php');
+	}
+	else if(isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==3){
+	//condinaot
+	//header('Location:codinator.php');
+	}
+else{
+//clear the session and logout
+  $_SESSION=array();
+  session_destroy();
+
+ header('Location:index.php');
+  
+}
+
+?>
+<?php
 	include("inc/header.php");
 ?>
 

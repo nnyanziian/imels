@@ -2,7 +2,7 @@ NProgress.start();
 //loadHeader();
 $(function() {
     NProgress.done();
-    $('.loader').fadeOut();
+    //$('.loader').fadeOut();
 
     $(document).ajaxSend(function() {
         $('.loader').fadeIn();
@@ -13,6 +13,7 @@ $(function() {
         $('#nprogress .spinner-icon').css({ 'border-top-color': '#fff', 'border-left-color': '#fff' });
 
     });
+
     $(document).ajaxStart(function() {
         $('.loader').fadeIn();
     });
@@ -21,35 +22,89 @@ $(function() {
         NProgress.done();
         $('.loader').fadeOut();
     });
+
+    //student register
+
+    $('.studentRegister').submit(function(event) {
+        console.log("Form is being submited");
+        registerStudent();
+        event.preventDefault();
+
+    });
+
+    //main login
+    $('.mainLogin').submit(function(event) {
+        event.preventDefault();
+        console.log("Login Form is being submited");
+        var type = $('.mainLogin .type').val();
+        if (type == '1') {
+            studentLogin();
+        } else if (type == '2') {
+            suLogin();
+        } else if (type == '3') {
+            cordinatorLogin();
+        } else {
+            notify("Could not get User Type", "error");
+        }
+
+
+
+    });
+
+    $('.logout').click(function(event) {
+        event.preventDefault();
+        logout();
+    });
+
+
+
 });
 
 
-function register() {
-    var username = $('.username').val();
+function registerStudent() {
+    var student_no = $('.student_no').val();
+    var reg_no = $('.regno').val();
+    var program = $('.program').val();
+    var fp = $('.fp').val();
+    var tel = $('.tel').val();
     var password = $('.password').val();
     var email = $('.email').val();
-    var first_name = $('.first_name').val();
-    var last_name = $('.last_name').val();
+    var name = $('.name').val();
+
+
 
     var formdata = {
-        "username": username,
+        "student_no": student_no,
+        "reg_no": reg_no,
+        "program": program,
+        "field_attachment": fp,
+        "tel": tel,
         "password": password,
         "email": email,
-        "first_name": first_name,
-        "last_name": last_name
+        "name": name
     };
     var LoginSettings = {
         "type": "POST",
-        "async": true,
-        "dataType": "json",
+        //"dataType": "json",
         "data": formdata,
-        "url": "http://192.168.1.105:8000/users/",
+        "url": "api/student/register",
     };
 
+
+
     $.ajax(LoginSettings).success(function(response) {
-        notify("User Account Created", "success");
-        window.location.href = "register.html";
-        console.log(JSON.stringify(response));
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify("Student Account noot created, Please check your submited details", "warning");
+        } else if (response.status == 'success') {
+            $('.studentRegister')[0].reset();
+            console.log(JSON.stringify(response));
+            notify("Student Account Created, Please click login to access your Account", "success");
+            //window.location.href = "index.php";
+        } else {
+
+        }
+
     });
 
 
@@ -84,7 +139,42 @@ function notify(textM, type) {
 
 
 
-function login() {
+function studentLogin() {
+    var username = $('.username').val();
+    var password = $('.password').val();
+
+
+    var formdata = {
+        "student_no": username,
+        "password": password,
+    };
+    var LoginSettings = {
+        "type": "POST",
+        //"dataType": "json",
+        "data": formdata,
+        "url": "api/student/login"
+    };
+
+    $.ajax(LoginSettings).success(function(response) {
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify(response.message, "warning");
+        } else if (response.status == 'success') {
+            $('.mainLogin')[0].reset();
+            console.log(JSON.stringify(response));
+            notify("Logging in as Student " + response.student_no, "success");
+            location.reload();
+            //window.location.href = "student.php";
+        } else {
+
+        }
+
+    });
+
+
+}
+
+function cordinatorLogin() {
     var username = $('.username').val();
     var password = $('.password').val();
 
@@ -95,131 +185,76 @@ function login() {
     };
     var LoginSettings = {
         "type": "POST",
-        "dataType": "json",
+        //"dataType": "json",
         "data": formdata,
-        "url": "http://192.168.1.105:8000/users/auth-token/"
+        "url": "api/internc/login"
     };
 
     $.ajax(LoginSettings).success(function(response) {
-        var tokenX = response.token;
-        document.cookie = "tokenX= jwt " + tokenX;
-        notify("Logging in", "success");
-        window.location.href = "index.html";
-        console.log(JSON.stringify(response));
-    });
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify(response.message, "warning");
+        } else if (response.status == 'success') {
+            $('.mainLogin')[0].reset();
+            console.log(JSON.stringify(response));
+            notify("Logging in as Cordinator: " + response.username, "success");
+            location.reload();
+            //window.location.href = "codinator.php";
+        } else {
 
-
-}
-
-
-
-
-
-
-
-
-$.ajax(LoginSettings).success(function(response) {
-    $('.addExpense')[0].reset();
-    notify("Record Saved Successfully", "success");
-    console.log(JSON.stringify(response));
-});
-
-
-}
-
-
-
-function incomeList() {
-
-    var LoginSettings = {
-        "type": "GET",
-        "url": "http://192.168.1.105:8000/incomeList",
-        "header": {
-            "Authorization": tokenX
         }
-    };
 
-    $.ajax(LoginSettings).success(function(response) {
-        $('.listX').html("");
-        console.log(JSON.stringify(response));
-        var appendData = "";
-        $.each(response, function(key, value) {
-
-
-            appendData += '<tr>' +
-                '<td>' + value.date + '</td>' +
-                '<td>' + value.reason + '</td>' +
-                '<td>' + value.amount + '</td>' +
-                '</tr>';
-
-
-
-        });
-        $('.listX').html(appendData);
     });
 
 
 }
 
 
-function expenseList() {
+function suLogin() {
+    var username = $('.username').val();
+    var password = $('.password').val();
 
+
+    var formdata = {
+        "username": username,
+        "password": password,
+    };
     var LoginSettings = {
-        "type": "GET",
-        "url": "http://192.168.1.105:8000/expenseList",
-        "header": {
-            "Authorization": tokenX
-        }
+        "type": "POST",
+        //"dataType": "json",
+        "data": formdata,
+        "url": "api/supervisor/login"
     };
 
     $.ajax(LoginSettings).success(function(response) {
-        $('.listX').html("");
-        console.log(JSON.stringify(response));
-        var appendData = "";
-        $.each(response, function(key, value) {
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify(response.message, "warning");
+        } else if (response.status == 'success') {
+            $('.mainLogin')[0].reset();
+            console.log(JSON.stringify(response));
+            notify("Logging in as Supervisor: " + response.username, "success");
+            location.reload();
+            //window.location.href = "codinator.php";
+        } else {
 
+        }
 
-            appendData += '<tr>' +
-                '<td>' + value.date + '</td>' +
-                '<td>' + value.amount + '</td>' +
-                '<td>' + value.puporse + '</td>' +
-                '<td>' + value.description + '</td>' +
-                '</tr>';
-
-
-
-        });
-        $('.listX').html(appendData);
     });
 
 
 }
 
 
-function adviceList() {
-
-    var LoginSettings = {
+function logout() {
+    var getSettings = {
         "type": "GET",
-        "url": "http://192.168.1.105:8000/adviceList",
-        "header": {
-            "Authorization": tokenX
-        }
+        "url": "api/user/logout",
     };
-
-    $.ajax(LoginSettings).success(function(response) {
-        $('.listX').html("");
+    $.ajax(getSettings).success(function(response) {
         console.log(JSON.stringify(response));
-        var appendData = "";
-        $.each(response, function(key, value) {
-
-
-            appendData += '<p class="well adv">' + value.advice + '</p>';
-
-
-
-        });
-        $('.listX').html(appendData);
+        notify("Logging out", "success");
+        location.reload();
     });
-
 
 }

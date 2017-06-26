@@ -150,8 +150,8 @@ function approveActivity($acId=''){
 				
 				echo json_encode(array(
 					'status' => 'success',
-					'percentage' => $pec.'%'
-					//'data' => $result->fetch_all(MYSQLI_ASSOC),
+					'percentage' => $pec.'%',
+					'data' => $result->fetch_all(MYSQLI_ASSOC)
 				));
 				exit();
 			} else if ($result->num_rows <= 0) {
@@ -166,9 +166,9 @@ function approveActivity($acId=''){
 	}
 
 //get activity by day
-    	function activityByDay($id=''){
+    	function activityByDay($id='', $st=""){
 		$conn=connect_db();
-		$sql = "SELECT * FROM logbook WHERE day_no = $id";
+		$sql = "SELECT * FROM logbook WHERE day_no = $id AND student_id=$st";
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
 			

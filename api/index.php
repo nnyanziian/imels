@@ -187,9 +187,10 @@ $app->get('/activity/delete/{id}', function ($request, $response, $args){
 
 
 			//activity  by Day *
-	$app->get('/activity/day/{id}', function ($request, $response, $args){
+	$app->get('/activity/{id}/{st}', function ($request, $response, $args){
 		$id=(int)$args['id'];
-		return activityByDay($id);
+		$st=(int)$args['st'];
+		return activityByDay($id, $st);
 
 	
 	});

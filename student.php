@@ -1,42 +1,76 @@
 <?php
+session_start();
+
+	if( isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==1){
+	//student
+	//header('Location:student.php');
+	}
+	else if(isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==2){
+	//supervisor
+	header('Location:supervisor.php');
+	}
+	else if(isset($_SESSION['elms-user_id']) && isset($_SESSION['elms-username']) && isset($_SESSION['elms-type']) && $_SESSION['elms-type']==3){
+	//condinaot
+	header('Location:codinator.php');
+	}
+else{
+//clear the session and logout
+  $_SESSION=array();
+  session_destroy();
+
+ header('Location:index.php');
+  
+}
+
+?>
+
+<?php
 	include("inc/header.php");
 ?>
 
 
 <div class="container">
 	<div class="row">
-    <div class="col-md-4 listOfStudnets">
-    <h3 class="page-header">Select date to fill logbook</h3>
-              <a href="#" class="btn btn-sm btn-default">1</a>
-        <a href="#" class="btn btn-sm btn-default">2</a>
-        <a href="#" class="btn btn-sm btn-default">3</a>
-        <a href="#" class="btn btn-sm btn-default">4</a>
-        <a href="#" class="btn btn-sm btn-default">5</a>
+    <div class="col-md-4 listOfDays" st-id="<?php echo $_SESSION['elms-user_id']; ?>">
+    <h4 class="page-header">Select day <button class="addActivity btn btn-sm btn-primary">New Day</button></h4>
+    
+    <div class="day_no_list">
+     </div>
     </div>
 
-    <div class="col-md-4 activityByDate">
-         <h3 class="page-header">Selected date 17th Jully 2017</h3>
-         <p>Enter the activities done.</p>
-        
+    <div class="col-md-4 activityByDate disabledP">
+         <h4 class="page-header">Enter the activities done.</h4>
+                
         <div class="activtyByDateSelected">
-        <form>
-            <textarea class="form-control"></textarea>
+        <form class="addActivityForm" st-id="<?php echo $_SESSION['elms-user_id']; ?>"> 
+        <div class="form-group">
+            <input required type="number" name="day_no" class="day_no form-control" placeholder="Day No 5">
+        </div>
+        <div class="form-group">
+            <textarea required class="form-control activity_details" placeholder="Activity Details"></textarea>
+        </div>
             <br>
-            <button class="btn btn-sm btn-primary">Add Activity</button>
+            <button type="submit" class="btn btn-sm btn-primary">Add Activity</button>
          </form>
          <br>
-         <p>Activites go here below in a list.</p>
+         <div class="activity_list">
+            <p class="alert alert-success">Activites go here below in a list.  <button class="pull-right btn btn-danger btn-xs">x</button></p>
                   <br>
-         <p>Activites go here below in a list.</p>
+            <p>Activites go here below in a list.</p>
+         </div>
         </div>
     </div>
 
     <div class="col-md-4 commmentOnActivity">
           <h3 class="page-header">Your progress</h3>
           <div class="progress-circle">
-              <span>5%</span>
+              <span class="progressP">0%</span>
           </div>
           <p class="text-center">Completed</p>
+
+          <div class="commentsBySupervisor">
+            <p class="alert alert-success">Comment</p>
+          </div>
     </div>
     </div>	
 
@@ -47,3 +81,4 @@
 <?php
 	include("inc/footer.php");
 ?>
+<script src="js/student.js"></script>
