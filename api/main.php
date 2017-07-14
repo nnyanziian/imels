@@ -12,7 +12,7 @@
             $student_no=mysqli_real_escape_string($conn,$_POST['student_no']);
 			$password=mysqli_real_escape_string($conn,$_POST['password']);
             
-            $loginSql="SELECT * FROM students WHERE student_no ='$student_no' LIMIT 1";
+            $loginSql="SELECT * FROM students WHERE student_no ='$student_no' AND assign_a = 1 LIMIT 1";
 	        $result=$conn->query($loginSql);
 
             if(!$result){
@@ -29,7 +29,7 @@
 				if(password_verify($password, $student['password'])){
 				
 				$_SESSION['elms-user_id']=$student['id'];
-				$_SESSION['elms-username']=$student['student_no'];
+				$_SESSION['elms-username']=$student['name'];
                 $_SESSION['elms-type']=1;
 
 				echo json_encode(array(
@@ -99,7 +99,7 @@ function inLogin(){
 				if(password_verify($password, $user['password'])){
 				
 				$_SESSION['elms-user_id']=$user['id'];
-				$_SESSION['elms-username']=$user['username'];
+				$_SESSION['elms-username']=$user['name'];
                 $_SESSION['elms-type']=3;
 
 				echo json_encode(array(
@@ -167,7 +167,7 @@ function suLogin(){
 				if(password_verify($password, $user['password'])){
 				
 				$_SESSION['elms-user_id']=$user['id'];
-				$_SESSION['elms-username']=$user['username'];
+				$_SESSION['elms-username']=$user['fullname'];
                 $_SESSION['elms-type']=2;
 				$_SESSION['elms-sutype']=$user['type'];
 
