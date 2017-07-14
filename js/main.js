@@ -95,7 +95,7 @@ function registerStudent() {
     $.ajax(LoginSettings).success(function(response) {
         if (response.status == 'failed' || response.status == 'error') {
             console.log(JSON.stringify(response));
-            notify("Student Account noot created, Please check your submited details", "warning");
+            notify("Student Account not created, " + response.message, "warning");
         } else if (response.status == 'success') {
             $('.studentRegister')[0].reset();
             console.log(JSON.stringify(response));

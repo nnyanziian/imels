@@ -44,7 +44,7 @@ else{
         <div class="activtyByDateSelected">
         <form class="addActivityForm" st-id="<?php echo $_SESSION['elms-user_id']; ?>"> 
         <div class="form-group">
-            <input required type="number" name="day_no" class="day_no form-control" placeholder="Day No 5">
+            <h4> <?php echo date("Y/m/d"); ?> </h4>
         </div>
         <div class="form-group">
             <textarea required class="form-control activity_details" placeholder="Activity Details"></textarea>

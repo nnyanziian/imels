@@ -1,17 +1,16 @@
 $(function() {
     window.su_id = $('.super').attr("su-id");
     window.su_type = $('.super').attr("su-type");
-    window.sutyped="";
-    if(window.su_type=='1'){
-        window.sutyped="hiddenE";
-    }
-    else if(window.su_type=='2'){
-         window.sutyped="";
+    window.sutyped = "";
+    if (window.su_type == '1') {
+        window.sutyped = "hiddenE";
+    } else if (window.su_type == '2') {
+        window.sutyped = "";
     }
     disableLocation(".activityStudent *");
     disableLocation(".commmentOnActivity *");
     getSupervisor(".assignedStudents");
-    
+
     $('.assignedStudents').on("change", function(e) {
         var stu = "";
         stu = $(this).val();
@@ -19,11 +18,11 @@ $(function() {
         //console.log(stu);
         getDaysOfStudent(".datesFilled", stu);
     });
-        $('.addComment').submit(function(e) {
+    $('.addComment').submit(function(e) {
         e.preventDefault();
-        var activityId=$(this).attr('data-id');
+        var activityId = $(this).attr('data-id');
         notify("Commenting...", "success");
-      commentOnActivity('.addComment', activityId);
+        commentOnActivity('.addComment', activityId);
     });
 
 
@@ -57,7 +56,7 @@ function getDaysOfStudent(loc = "", id = "") {
 
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += ' &nbsp; <a href="' + value.day_no + '" class="dayBtn btn btn-sm btn-default">' + value.day_no + '</a> &nbsp; ';
+                appendData += ' &nbsp; <a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a> &nbsp; ';
 
             });
             $(loc).html(appendData);
@@ -99,41 +98,41 @@ function activityByDay(loc = "", id = "", st = "") {
             $.each(elementV, function(key, value) {
                 if (value.approved == 0) {
                     var color = "warning"
-                    var AppText='Approve';
-                    var btnState="";
+                    var AppText = 'Approve';
+                    var btnState = "";
                 } else {
                     var color = "success"
-                    var AppText='Approved';
-                    var btnState="disabled";
+                    var AppText = 'Approved';
+                    var btnState = "disabled";
                 }
 
 
-                appendData += '<p class = "activityItem alert alert-' + color + '" href = "' + value.id + '" > <span class = "vAlign" >' + value.activity_details + '</span>  <button value="' + value.id + '" '+btnState+' class="approveBtn pull-right btn btn-sm btn-default '+window.sutyped+'">'+AppText+'</button> <button value="' + value.id + '"class = "goToComments pull-right btn btn-sm btn-default" > Comment </button></p> ';
+                appendData += '<p class = "activityItem alert alert-' + color + '" href = "' + value.id + '" > <span class = "vAlign" >' + value.activity_details + '</span>  <button value="' + value.id + '" ' + btnState + ' class="approveBtn pull-right btn btn-sm btn-default ' + window.sutyped + '">' + AppText + '</button> <button value="' + value.id + '"class = "goToComments pull-right btn btn-sm btn-default" > Comment </button></p> ';
 
             });
             $(loc).html(appendData);
-            $('.approveBtn').click( function(e){
+            $('.approveBtn').click(function(e) {
                 e.preventDefault();
-                actId=$(this).attr("value");
-                notify("Approving...","success");
-                 approveActivity(actId);
-                 $(this).html('Approved <i class="fa fa-check"></i>');
-                 $(this).addClass('btn-success');
-                 $(this).removeClass('btn-default');
-                 $(this).attr("disabled", true);
-                 $(this).parent().addClass('alert-success');
-                 $(this).parent().removeClass('alert-warning');
-               
+                actId = $(this).attr("value");
+                notify("Approving...", "success");
+                approveActivity(actId);
+                $(this).html('Approved <i class="fa fa-check"></i>');
+                $(this).addClass('btn-success');
+                $(this).removeClass('btn-default');
+                $(this).attr("disabled", true);
+                $(this).parent().addClass('alert-success');
+                $(this).parent().removeClass('alert-warning');
+
             });
 
-                $('.goToComments').click( function(e){
-                    var activity_id=$(this).val();
-                    e.preventDefault();
-                    enableLocation('.commmentOnActivity *');
-                    $('.commmentOnActivity form').attr("data-id",activity_id);
-                    viewComments(".commentList", activity_id);
-                });
-           
+            $('.goToComments').click(function(e) {
+                var activity_id = $(this).val();
+                e.preventDefault();
+                enableLocation('.commmentOnActivity *');
+                $('.commmentOnActivity form').attr("data-id", activity_id);
+                viewComments(".commentList", activity_id);
+            });
+
         }
 
 
@@ -188,9 +187,9 @@ function getSupervisor(loc = "") {
     });
 }
 
-function approveActivity(actId=""){
+function approveActivity(actId = "") {
     ///activity/approve/{id}
-       var formsSettings = {
+    var formsSettings = {
         "type": "GET",
         "dataType": "json",
         "url": "api/activity/approve/" + actId
@@ -202,9 +201,9 @@ function approveActivity(actId=""){
         if (response.status == 'failed' || response.status == 'error') {
 
             notify("Cannot be approved", "warning");
-            
+
         } else if (response.status == 'success') {
-            
+
             notify("Approved", "success");
 
 
@@ -217,19 +216,19 @@ function approveActivity(actId=""){
 }
 
 
-function commentOnActivity(elemento, activityId){
-    var suType =window.su_type;
+function commentOnActivity(elemento, activityId) {
+    var suType = window.su_type;
     var supervisor_id = window.su_id;
-    var supType3=window.su_type;
-    var comment_details=$(elemento +' .comment_details').val();
+    var supType3 = window.su_type;
+    var comment_details = $(elemento + ' .comment_details').val();
 
 
-    
+
     var formdata = {
         "supervisor_id": supervisor_id,
-        "comment_details":comment_details,
-        "supervisor_type":supType3,
-        "activity_id":activityId
+        "comment_details": comment_details,
+        "supervisor_type": supType3,
+        "activity_id": activityId
 
     };
 
@@ -257,7 +256,7 @@ function commentOnActivity(elemento, activityId){
 }
 
 
-function viewComments(loc="", id = "") {
+function viewComments(loc = "", id = "") {
 
     var formsSettings = {
         "type": "GET",

@@ -191,6 +191,25 @@ function studentAssignBySupervisor($id=''){
 			$email=mysqli_real_escape_string($conn,$_POST['email']);
 			$password=mysqli_real_escape_string($conn,$_POST['password']);
 
+			 $checkSql="SELECT * FROM students WHERE student_no ='$student_no' LIMIT 1";
+			 $resultCheck=$conn->query($checkSql);
+
+			 if(!$resultCheck){
+                echo json_encode(array(
+                    'status' => 'error',
+                    'message' => mysqli_error($conn)
+                ));
+                exit();
+		    }
+			else if($resultCheck->num_rows===1){
+				echo json_encode(array(
+					'status' => 'failed',
+					'message' => $student_no.' is not availbale for registering'
+				));
+				exit();
+			}
+			
+
 			$rehashed=password_hash($password, PASSWORD_DEFAULT);
 
 			$sql = "INSERT INTO students ";

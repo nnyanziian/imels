@@ -100,9 +100,10 @@ $app->get('/internc/delete/{id}', function ($request, $response, $args){
 	});
 
 	//delete activity *
-$app->get('/activity/delete/{id}', function ($request, $response, $args){
+$app->get('/activity/delete/{id}/{date_created}', function ($request, $response, $args){
 		$id=(int)$args['id'];
-		return deleteActivity($id);
+		$date_created=(string)$args['date_created'];
+		return deleteActivity($id, $date_created);
 	});
 
 
@@ -194,7 +195,7 @@ $app->get('/activity/delete/{id}', function ($request, $response, $args){
 
 			//activity  by Day *
 	$app->get('/activity/{id}/{st}', function ($request, $response, $args){
-		$id=(int)$args['id'];
+		$id=(string)$args['id'];
 		$st=(int)$args['st'];
 		return activityByDay($id, $st);
 

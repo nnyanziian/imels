@@ -53,7 +53,7 @@
            
 				echo json_encode(array(
 					'status' => 'failed',
-					'message' => 'Student Number does not exist'
+					'message' => 'Student Number does not exist Or You have Not been Assigned an Academic Supervisor'
 				));
 				exit();
 			}

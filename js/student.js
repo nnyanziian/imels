@@ -19,11 +19,10 @@ $(function() {
         });
 
         $('.addActivityForm').submit(function(event) {
-            event.preventDefault();
 
             console.log("Form is being submited");
             addActivity();
-
+            event.preventDefault();
 
         });
 
@@ -41,38 +40,37 @@ $(function() {
 
 
 function addActivity() {
+
     var student_id = $('.addActivityForm').attr("st-id");
-    var day_no = $('.addActivityForm .day_no').val();
     var activity_details = $('.addActivityForm .activity_details').val();
 
 
-    var formdata = {
+    var formdataC = {
         "student_id": student_id,
-        "day_no": day_no,
         "activity_details": activity_details
     };
 
-    var formSettings = {
+    var formSettingsC = {
         "type": "POST",
         //"dataType": "json",
-        "data": formdata,
+        "data": formdataC,
         "url": "api/logbook/add",
     };
-
-    $.ajax(formSettings).success(function(response) {
+    // console.log("1");
+    $.ajax(formSettingsC).success(function(response) {
 
         if (response.status == 'failed' || response.status == 'error') {
             console.log(JSON.stringify(response));
             notify("Activity not Created Please check your submited details", "warning");
         } else if (response.status == 'success') {
-            //$('.addActivityForm')[0].reset();
             console.log(JSON.stringify(response));
             notify("Activity Created", "success");
-            //$('.disabledP').fadeOut();
-            // $('.disabledP .addActivityForm').fadeOut();
-            location.reload();
 
-            //getDaysOfStudent(student_id);
+            setTimeout(function() {
+                window.location.reload();
+            }, 5000);
+
+
 
         } else {
 
@@ -82,9 +80,6 @@ function addActivity() {
 
 }
 
-function studentProgress(id = "") {
-
-}
 
 function getDaysOfStudent(id = "") {
     var formsSettings = {
@@ -109,7 +104,7 @@ function getDaysOfStudent(id = "") {
 
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += ' &nbsp; <a href="' + value.day_no + '" class="dayBtn btn btn-sm btn-default">' + value.day_no + '</a> &nbsp; ';
+                appendData += ' &nbsp; <a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a> &nbsp; ';
 
             });
             $('.day_no_list').html(appendData);
@@ -118,6 +113,7 @@ function getDaysOfStudent(id = "") {
                 event.preventDefault();
                 var dayNox = $(this).attr('href');
                 var std = $('.listOfDays').attr("st-id");
+
                 activityByDay(dayNox, std);
             });
 
@@ -132,6 +128,7 @@ function getDaysOfStudent(id = "") {
 
 
 function activityByDay(id = "", st = "") {
+
     $('.disabledP').fadeIn(function() {
         $('.disabledP .addActivityForm').fadeOut();
         $('.disabledP .activity_list').fadeIn();
@@ -145,6 +142,7 @@ function activityByDay(id = "", st = "") {
 
 
     $.ajax(formsSettings).success(function(response) {
+        console.log(JSON.stringify(response));
         $('.activity_list').html("");
 
         if (response.status == 'failed' || response.status == 'error') {
@@ -155,7 +153,7 @@ function activityByDay(id = "", st = "") {
         } else if (response.status == 'success') {
             console.log(JSON.stringify(response));
             var elementV = response.data;
-
+            var date_created = response.data[0].date_created;
             var appendData = "";
             $.each(elementV, function(key, value) {
                 if (value.approved == 0) {
@@ -171,9 +169,11 @@ function activityByDay(id = "", st = "") {
             $('.delActivity').click(function(event) {
                 event.preventDefault();
                 var actId = $(this).attr('href');
-                activityDel(actId);
 
-                $(this).parent().remove();
+
+                activityDel(actId, date_created);
+
+                // $(this).parent().remove();
 
             });
 
@@ -193,11 +193,11 @@ function activityByDay(id = "", st = "") {
 
 }
 
-function activityDel(actId = "") {
+function activityDel(actId = "", date_created = "") {
     var formsSettings = {
         "type": "GET",
         "dataType": "json",
-        "url": "api/activity/delete/" + actId
+        "url": "api/activity/delete/" + actId + "/" + date_created
     };
 
     $.ajax(formsSettings).success(function(response) {
@@ -205,7 +205,7 @@ function activityDel(actId = "") {
 
         if (response.status == 'failed' || response.status == 'error') {
 
-            notify("Failed to remove activity", "warning");
+            notify(response.message, "warning");
             //$('.disabledP').hide();
 
         } else if (response.status == 'success') {
