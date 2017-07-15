@@ -113,7 +113,6 @@ function getDaysOfStudent(id = "") {
                 event.preventDefault();
                 var dayNox = $(this).attr('href');
                 var std = $('.listOfDays').attr("st-id");
-
                 activityByDay(dayNox, std);
             });
 
@@ -128,7 +127,6 @@ function getDaysOfStudent(id = "") {
 
 
 function activityByDay(id = "", st = "") {
-
     $('.disabledP').fadeIn(function() {
         $('.disabledP .addActivityForm').fadeOut();
         $('.disabledP .activity_list').fadeIn();
