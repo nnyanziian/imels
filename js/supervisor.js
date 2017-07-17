@@ -274,10 +274,16 @@ function viewComments(loc = "", id = "") {
 
         } else if (response.status == 'success') {
             var elementV = response.data;
-
+            var supervisorTypeD="";
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += '<p class="commentItem" href="' + value.id + '"><span class="vAlign">' + value.comment_details + '</span></p>';
+                if(value.supervisor_type=='1'){
+                    supervisorTypeD='Academic Supervisor';
+                }
+                else if(value.supervisor_type=='2'){
+                    supervisorTypeD='Field Supervisor';
+                }
+                appendData += '<p class="commentItem" href="' + value.id + '"><span class="vAlign">' + value.comment_details + '</span><span class="badge badge-default pull-right">By '+supervisorTypeD+'</span></p>';
 
             });
             $(loc).html(appendData);
@@ -287,5 +293,10 @@ function viewComments(loc = "", id = "") {
 
 
     });
+
+}
+
+
+function updateSupervisor(id=''){
 
 }

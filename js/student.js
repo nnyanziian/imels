@@ -230,6 +230,7 @@ function viewComments(id = "") {
 
 
     $.ajax(formsSettings).success(function(response) {
+        console.log(JSON.stringify(response));
         $('.commentsBySupervisor').html("");
 
         if (response.status == 'failed' || response.status == 'error') {
@@ -238,10 +239,17 @@ function viewComments(id = "") {
 
         } else if (response.status == 'success') {
             var elementV = response.data;
-
+            var supervisorTypeD="";
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.comment_details + '</p><br>';
+                if(value.supervisor_type=='1'){
+                    supervisorTypeD='Academic Supervisor';
+                }
+                else if(value.supervisor_type=='2'){
+                    supervisorTypeD='Field Supervisor';
+                }
+
+                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.comment_details + '<span class="badge badge-default pull-right">By '+supervisorTypeD+'</span></p><br>';
 
             });
             $('.commentsBySupervisor').html(appendData);
