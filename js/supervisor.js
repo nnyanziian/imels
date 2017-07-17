@@ -25,6 +25,20 @@ $(function() {
         commentOnActivity('.addComment', activityId);
     });
 
+    //updateSupervisorForm
+     $('.updateSupervisorForm').submit(function(e) {
+        e.preventDefault();
+        
+        notify("Updating...", "success");
+        
+        updateSupervisor('.updateSupervisorForm', window.su_id);
+    });
+
+    $('.viewAccDetails').click( function(){
+        viewSupervisorDetils('.updateSupervisorForm', window.su_id);
+    });
+
+    
 
 });
 
@@ -296,7 +310,118 @@ function viewComments(loc = "", id = "") {
 
 }
 
+function viewSupervisorDetils(elemento='', id=''){
+    var formsSettings = {
+        "type": "GET",
+        "dataType": "json",
+        "url": "api/supervisor/" + id,
+    };
 
-function updateSupervisor(id=''){
 
+    $.ajax(formsSettings).success(function(response) {
+        console.log(JSON.stringify(response));
+        $(elemento)[0].reset();
+      
+
+        if (response.status == 'failed' || response.status == 'error') {
+
+            notify("Supervisor Details Cannot be loaded", "warning");
+
+        } else if (response.status == 'success') {
+            var elementV = response.data[0];
+            
+            $(elemento +' .username').val(elementV.username);
+            $(elemento +' .fullname').val(elementV.fullname);
+            $(elemento +' .department').val(elementV.department);
+            $(elemento +' .tel').val(elementV.tel);
+            $(elemento +' .email').val(elementV.email);
+           
+        
+
+        }
+
+        //changeSupervisorPassword
+    $('.changeSupervisorPassword').submit(function(e) {
+        e.preventDefault();
+        notify("Updating password...", "success");
+        
+        setSupervisorPassword('.changeSupervisorPassword');
+    });
+
+    });
+
+}
+
+
+function updateSupervisor(elemento=''){
+    
+
+    var supervisor_id = window.su_id;
+
+     var username = $(elemento +' .username').val();
+     var fullname = $(elemento +' .fullname').val();
+     var department = $(elemento +' .department').val();
+    var tel = $(elemento +' .tel').val();
+    var email = $(elemento +' .email').val();
+
+
+    var formdata = {
+      'username':username, 
+      'fullname':fullname,
+      'department':department,
+      'tel':tel,
+      'email':email,   
+    };
+
+
+    var formSettings = {
+        "type": "POST",
+        "data": formdata,
+        "url": "api/supervisor/update/"+supervisor_id,
+    };
+
+    $.ajax(formSettings).success(function(response) {
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify("Update Failed", "warning");
+        } else if (response.status == 'success') {
+            notify("Updates saved", "success");
+            
+            
+        } else {
+
+        }
+
+    });
+}
+
+
+function setSupervisorPassword(elemento=''){
+    var supervisor_id = window.su_id;
+
+    var password = $(elemento +' .password').val();
+
+    var formdata = {
+      'password':password,
+    }
+
+    var formSettings = {
+        "type": "POST",
+        "data": formdata,
+        "url": "api/supervisor/setpassword/"+supervisor_id,
+    };
+
+    $.ajax(formSettings).success(function(response) {
+        if (response.status == 'failed' || response.status == 'error') {
+            console.log(JSON.stringify(response));
+            notify("Update Failed", "warning");
+        } else if (response.status == 'success') {
+            notify("Updates saved", "success");
+            
+            
+        } else {
+
+        }
+
+    });
 }

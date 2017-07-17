@@ -69,7 +69,7 @@
     //logged
  
         ?>
-<li><a href="#"><span class="fa fa-user"> </span> <?php echo $stype.$_SESSION['elms-username']; ?></a></li>
+<li><a href="#" class="viewAccDetails" data-toggle="modal" data-target="#updateAccount" ><span class="fa fa-user"> </span> <?php echo $stype.$_SESSION['elms-username']; ?></a></li>
         <li><a class="logout" href="#">Logout</a></li>
         
         <?php

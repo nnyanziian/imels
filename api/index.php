@@ -130,6 +130,13 @@ $app->get('/activity/delete/{id}/{date_created}', function ($request, $response,
 		return updateSupervisor($id);
 	});
 
+	//update Supervisor password*
+
+	$app->post('/supervisor/setpassword/{id}', function ($request, $response, $args){
+		$id=(int)$args['id'];
+		return updateSupervisorPassword($id);
+	});
+
 //delete supervisor *
 	$app->get('/supervisor/delete/{id}', function ($request, $response, $args){
 		$id=(int)$args['id'];

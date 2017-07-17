@@ -82,7 +82,72 @@ else{
 
 
 </div>
+<!-- Update Supervisor Details -->
+<div id="updateAccount" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Update Supervisor Details</h4>
+      </div>
+      <div class="modal-body">
+        <form name="updateSupervisorForm" class="updateSupervisorForm" id="addSupervisorForm">
+			
+					<div class="input-group">
+					<span class="input-group-addon">Full Name</span>
+					<input name="fullname" type="text" class="fullname form-control" placeholder="John Doe" required>
+				</div>
+				<br>
+
+				<div class="input-group">
+					<span class="input-group-addon">Username</span>
+					<input name="username" type="text" class="username form-control" placeholder="uername for supervisor" required>
+				</div>
+				<br>
+                <div class="input-group">
+					<span class="input-group-addon">Department</span>
+					<input name="department"  type="text" class="department form-control" placeholder="Computin, Networking, programming" required>
+				</div>
+				<br>
+                <div class="input-group">
+					<span class="input-group-addon">Tel</span>
+					<input name="tel"  type="tel" class="tel form-control" placeholder="2567982457" required>
+				</div>
+				<br>
+                <div class="input-group">
+					<span class="input-group-addon">Email</span>
+					<input name="email" type="email" class="email form-control" placeholder="example@mak.com" required>
+				</div>
+				<br>
+				
+			<button type="submit"class="btn btn-primary">Save</button>
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 </form>
+			<!--
+						
+			<Button type="submit" class="continue btn btn-primary">Register <span class="fa fa-angle-right"></span></Button>
+			
+			-->
+
+            </div>
+            <div class="modal-footer">
+                
+            
+			 
+            <form name="changeSupervisorPassword" class="pull-left form-inline changeSupervisorPassword">
+                <input type="password" class="form-control password" required placeholder="Set a new password">
+                <button type="submit"class="btn btn-primary">Set New PAssword</button>
+             </form>
+              </div>
+             <br>
+             <br>
+      </div>
+        </div>
+
+  </div>
+</div>
 <?php
 	include("inc/footer.php");
 ?>
