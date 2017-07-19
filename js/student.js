@@ -249,7 +249,7 @@ function viewComments(id = "") {
                     supervisorTypeD='Field Supervisor';
                 }
 
-                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.comment_details + '<span class="badge badge-default pull-right">By '+supervisorTypeD+'</span></p><br>';
+                appendData += '<p class="alert alert-success" href="' + value.id + '">' + value.comment_details + '<span class="badge badge-default pull-right">By '+supervisorTypeD+' <br />( ' +value.fullname+')</span></p><br>';
 
             });
             $('.commentsBySupervisor').html(appendData);

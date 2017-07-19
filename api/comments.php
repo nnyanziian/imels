@@ -37,7 +37,7 @@ header('Content-type:application/json');
 	//get a comment by id
 	function getCommentByActivity($id=''){
 		$conn=connect_db();
-		$sql = "SELECT * FROM comments WHERE activity_id=$id";
+		$sql = "SELECT s.fullname, c.comment_details, c.supervisor_type, c.date_created FROM comments AS c LEFT JOIN supervisors AS s ON s.id= c.supervisor_id WHERE c.activity_id=$id";
 		$result = mysqli_query($conn, $sql);
 		if (!$result) {
 			
@@ -67,10 +67,6 @@ header('Content-type:application/json');
 		}
 	}
 
-//test method
-    function test(){
-        echo "Route passes throug very well";
-    }
 
 // create a comment
 

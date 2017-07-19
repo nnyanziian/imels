@@ -297,7 +297,7 @@ function viewComments(loc = "", id = "") {
                 else if(value.supervisor_type=='2'){
                     supervisorTypeD='Field Supervisor';
                 }
-                appendData += '<p class="commentItem" href="' + value.id + '"><span class="vAlign">' + value.comment_details + '</span><span class="badge badge-default pull-right">By '+supervisorTypeD+'</span></p>';
+                appendData += '<p class="commentItem" href="' + value.id + '"><span class="vAlign">' + value.comment_details + '</span><span class="badge badge-default pull-right">By '+supervisorTypeD+' <br />( ' +value.fullname+')</span></p>';
 
             });
             $(loc).html(appendData);
