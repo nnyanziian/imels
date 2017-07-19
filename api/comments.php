@@ -32,7 +32,40 @@ header('Content-type:application/json');
 			}
 		}
 	}
+	//get all supervisors for student
+	//SELECT s.fullname, s.type, s.email FROM supervisor_student_assignmnet AS ssa LEFT JOIN supervisors AS s ON ssa.supervisor_id=s.id WHERE ssa.student_id=1
 
+	function getSupervisorsForStudent($id=''){
+		$conn=connect_db();
+		$sql = "SELECT s.fullname, s.type, s.email FROM supervisor_student_assignmnet AS ssa LEFT JOIN supervisors AS s ON ssa.supervisor_id=s.id WHERE ssa.student_id=$id";
+		$result = mysqli_query($conn, $sql);
+		if (!$result) {
+			
+			echo json_encode(array(
+				'status' => 'error',
+				'message' => mysqli_error($conn)
+			));
+			exit();
+		}
+		else{
+			
+			if ($result->num_rows > 0) {
+				
+				echo json_encode(array(
+					'status' => 'success',
+					'data' => $result->fetch_all(MYSQLI_ASSOC)
+				));
+				exit();
+			} else if ($result->num_rows <= 0) {
+				
+				echo json_encode(array(
+					'status' => 'failed',
+					'message' => 'There are no Supervisors at the moment'
+				));
+				exit();
+			}
+		}
+	}
 
 	//get a comment by id
 	function getCommentByActivity($id=''){

@@ -70,7 +70,7 @@ function getDaysOfStudent(loc = "", id = "") {
 
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += ' &nbsp; <a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a> &nbsp; ';
+                appendData += '<a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a>';
 
             });
             $(loc).html(appendData);

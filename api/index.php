@@ -57,6 +57,12 @@
 		return getCommentByActivity($commentId);
 	});
 
+	//getSupervisorsForStudent
+		$app->get('/supervisors/student/{id}', function ($request, $response, $args){
+		$id=(int)$args['id'];
+		return getSupervisorsForStudent($id);
+	});
+
 	//Add Student *
 	$app->post('/comment/add', 'addComment');	
 

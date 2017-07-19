@@ -7,7 +7,7 @@ $(function() {
 
     var student_id = $('.listOfDays').attr("st-id");
     getDaysOfStudent(student_id);
-
+    getSupervisorOfStudent(student_id, '.supervees');
 
     // add Activity
     $('.addActivity').click(function(e) {
@@ -104,7 +104,7 @@ function getDaysOfStudent(id = "") {
 
             var appendData = "";
             $.each(elementV, function(key, value) {
-                appendData += ' &nbsp; <a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a> &nbsp; ';
+                appendData += '<a href="' + value.date_created + '" class="dayBtn btn btn-sm btn-default">' + value.date_created + '</a>';
 
             });
             $('.day_no_list').html(appendData);
@@ -116,7 +116,67 @@ function getDaysOfStudent(id = "") {
                 activityByDay(dayNox, std);
             });
 
+            
+        }
 
+
+
+    });
+
+}
+
+//get supervisors
+function getSupervisorOfStudent(id = "", elementX='') {
+    var formsSettings = {
+        "type": "GET",
+        "dataType": "json",
+        "url": "api/supervisors/student/" + id,
+    };
+
+
+    $.ajax(formsSettings).success(function(response) {
+        $(elementX).html("");
+
+        if (response.status == 'failed' || response.status == 'error') {
+
+            notify(JSON.stringify(response.message), "warning");
+
+        } else if (response.status == 'success') {
+            var elementV = response.data;
+            var supervisorTypeD='';
+            var appendData = "";
+            $.each(elementV, function(key, value) {
+                if(value.type=='1'){
+                    supervisorTypeD='Academic Supervisor';
+                }
+                else if(value.type=='2'){
+                    supervisorTypeD='Field Supervisor';
+                }
+                /*
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>supervisor type</th>
+                        </tr>
+                        </thead>
+                        <tbody class="supervees">
+                        <tr>
+                            <td>John</td>
+                            <td>Doe</td>
+                            <td>john@example.com</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                */
+
+                appendData += '<tr><td>' + value.fullname +'</td><td>'+value.email+'</td><td>'+supervisorTypeD+'</td></tr>';
+
+            });
+            $(elementX).html(appendData);
+
+                    
         }
 
 

@@ -65,6 +65,23 @@ else{
           </div>
           <p class="text-center">Completed</p>
 
+<h3 class="page-header">Assigned Supervisors</h3>
+        <div class="supervisor-listed">
+             <table class="table table-responsive">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                        </tr>
+                        </thead>
+                        <tbody class="supervees">
+                        
+                        </tbody>
+                    </table>
+            
+        </div>
+
 
        <h3 class="page-header">Supervisor Comments</h3>
           <div class="commentsBySupervisor">
